@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Little Learners</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<style>
+:root{--ink:#242343;--mut:#85839d;--pu:#7458e8;--pd:#5c42cf;--lav:#f0edff;--ln:#eeedf5}
+*{box-sizing:border-box}body{margin:0;background:#f8f7fc;color:var(--ink);font-family:"DM Sans",sans-serif}
+button,input{font:inherit}button{cursor:pointer}h1,h2,h3{font-family:Fredoka,sans-serif;margin:0}
+.wrap{max-width:1100px;margin:auto;padding:16px}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.brand{font:600 22px Fredoka;margin-right:auto}.brand b{color:var(--pu)}
+.chip{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:8px 12px;font-weight:700;font-size:13px}
+.ib{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:8px 11px;font-size:16px}.ib:hover{background:var(--lav)}
+.pb{background:linear-gradient(135deg,#8067ef,#674bdc);color:#fff;border:0;border-radius:13px;padding:12px 20px;font-weight:700;box-shadow:0 7px 16px #7458e847}
+.pb:hover{transform:translateY(-2px)}.pb:disabled{opacity:.5}
+.gb{background:var(--lav);color:var(--pu);border:0;border-radius:12px;padding:10px 16px;font-weight:700}
+.hero{background:linear-gradient(112deg,#efebff,#e3e1ff);border-radius:24px;padding:30px;display:flex;align-items:center;justify-content:space-between;gap:16px;overflow:hidden}
+.hero h1{font-size:clamp(26px,4vw,40px);line-height:1.15;max-width:480px}.hero h1 em{color:var(--pu);font-style:normal}
+.hero p{color:#77748f;max-width:400px}.big{font-size:90px;animation:hop 3s infinite}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:14px}
+.stat{display:flex;gap:10px;align-items:center}.stat span{font-size:26px}.stat b{font:600 20px Fredoka;display:block}.stat small{color:var(--mut)}
+.grid{display:grid;grid-template-columns:1fr 260px;gap:16px}
+.lessons{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lc{background:#fff;border:1px solid var(--ln);border-radius:18px;overflow:hidden;transition:.2s}.lc:hover{transform:translateY(-4px);box-shadow:0 13px 29px #443c7414}
+.art{height:110px;display:grid;place-items:center;font-size:62px;cursor:pointer;position:relative}
+.art i{position:absolute;top:8px;left:8px;font:800 9px "DM Sans";font-style:normal;background:#ffffffcf;border-radius:8px;padding:4px 8px}
+.m{background:#ffeab5}.r{background:#cdeedd}.s{background:#cfe6ff}.a{background:#ffd9e2}
+.li{padding:12px}.li h3{font-size:16px}.li small{color:var(--mut);font-size:11px}
+.bar{height:7px;background:#f0eef6;border-radius:9px;overflow:hidden;margin:8px 0}.bar div{height:100%;background:linear-gradient(90deg,#8b73f3,#b09cff);transition:width .4s}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.side{display:grid;gap:12px;align-content:start}
+.ring{width:70px;height:70px;border-radius:50%;display:grid;place-items:center}.ring div{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;font:600 15px Fredoka;color:var(--pu)}
+.wk{display:flex;justify-content:space-between;margin-top:10px}.wk div{text-align:center;font-size:10px;color:var(--mut)}
+.dot{width:22px;height:22px;border-radius:7px;border:1px solid #efdcae;display:grid;place-items:center;margin:0 auto 3px;font-size:11px}
+.dot.on{background:#ffbd52;color:#fff;border-color:#ffb74e}.dot.td{border-color:var(--pu)}
+.search{width:100%;border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.bg{position:fixed;inset:0;background:#24203c99;display:grid;place-items:center;padding:16px;z-index:20;overflow:auto}
+.modal{background:#fff;border-radius:24px;padding:24px;width:min(100%,460px);position:relative;max-height:92vh;overflow:auto}
+.x{position:absolute;top:12px;right:12px;border:0;background:#f5f3fb;border-radius:10px;width:34px;height:34px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.tile{border:1px solid var(--ln);border-radius:14px;padding:12px;text-align:center;font-size:12px}.tile b{display:block;font-size:13px}
+.tile .e{font-size:38px}.lock{opacity:.4;filter:grayscale(1)}
+.qwrap{max-width:560px;margin:auto;text-align:center}
+.mascot{font-size:78px;display:inline-block}.hopA{animation:hop .6s}.shk{animation:shake .4s}
+.qcard{background:#fff;border:1px solid var(--ln);border-radius:22px;padding:22px;margin:12px 0}
+.qcard h2{font-size:24px;margin-bottom:16px}
+.opts{display:grid;gap:10px}.opt{border:2px solid var(--ln);background:#fff;border-radius:14px;padding:14px;font-weight:700;font-size:16px}
+.opt:hover{border-color:#c4b8ff;background:#f7f5ff}.opt.ok{border-color:#8dd9b7;background:#edfbf4;color:#24875f}.opt.no{border-color:#ffb5a9;background:#fff2ef;color:#b45244}
+.fb{min-height:24px;font-weight:700;color:#6d6881;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#292542;color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;font-size:13px;z-index:50;text-align:center;max-width:90vw}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(145deg,#f2efff,#fff5f0)}
+.lcard{background:#fff;border-radius:26px;padding:32px;width:min(100%,400px);text-align:center;box-shadow:0 24px 70px #40356e18}
+.lcard input{width:100%;border:1px solid #e9e6f1;border-radius:13px;padding:13px;margin:14px 0 6px}
+.av{display:flex;justify-content:center;gap:8px;margin:12px 0 18px}.av button{border:2px solid transparent;background:#f5f2fb;border-radius:14px;width:46px;height:46px;font-size:24px}.av .sel{border-color:#8b73f3;background:#eeebff}
+.cf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}.cf span{position:absolute;top:-30px;animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-22px) rotate(-6deg)}70%{transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{padding:20px}.big{font-size:60px}}
+@media(max-width:480px){.lessons{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const {useState,useEffect,useRef}=React, h=React.createElement;
+/* ---------- helpers ---------- */
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, P=a=>a[R(0,a.length-1)];
+const S=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const ld=(k,d=null)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const dk=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const gap=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5);
+const week=()=>{const m=new Date();m.setHours(12);m.setDate(m.getDate()-(m.getDay()+6)%7);return Array.from({length:7},(_,i)=>{const d=new Date(m);d.setDate(m.getDate()+i);return dk(d)})};
+const cur=s=>s.last&&gap(s.last,dk(new Date()))<=1?s.streak:0;
+const lvl=e=>Math.floor(e/200)+1;
+let AC=null,SND=true;
+function beep(n=[660],d=.14){if(!SND)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();n.forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+i*.1;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.15,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)})}catch(e){}}
+function say(t){try{speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(t.replace(/[^\x20-\x7E]/g,"").replace(/_+/g,"blank")))}catch(e){}}
+
+/* ---------- question generators (infinite) ---------- */
+const opts=(ans,wrong)=>({options:S([ans,...[...new Set(wrong.filter(x=>x!==ans))].slice(0,2)]),answer:ans});
+const numQ=(question,ans)=>{const w=new Set();while(w.size<2){const x=ans+R(-4,4);if(x!==ans&&x>=0)w.add(String(x))}return{question,...opts(String(ans),[...w])}};
+const CAT={animal:["🐶 Dog","🐱 Cat","🐘 Elephant","🦁 Lion","🐟 Fish","🐰 Rabbit","🐸 Frog","🐵 Monkey"],fruit:["🍎 Apple","🍌 Banana","🍇 Grapes","🍓 Strawberry","🍊 Orange","🍉 Watermelon"],vehicle:["🚗 Car","🚌 Bus","🚂 Train","✈️ Airplane","🚲 Bicycle","🚢 Ship"],thing:["⚽ Ball","📚 Book","🪑 Chair","🧦 Sock","🔑 Key","🥄 Spoon"]};
+const CL={animal:"an animal",fruit:"a fruit",vehicle:"a vehicle",thing:"a thing you can hold"};
+const catQ=c=>{const a=P(CAT[c]),w=S(Object.keys(CAT).filter(k=>k!==c).flatMap(k=>CAT[k])).slice(0,2);return{question:`Which one is ${CL[c]}?`,...opts(a,w)}};
+const RH=[["cat","hat","bat","mat"],["dog","log","frog","fog"],["sun","run","fun","bun"],["bee","tree","knee","key"],["cake","lake","snake","bake"],["star","car","jar","far"],["moon","spoon","soon","noon"],["ball","wall","tall","fall"]];
+const OPP=[["up","down"],["big","small"],["hot","cold"],["day","night"],["happy","sad"],["open","close"],["fast","slow"],["old","new"],["full","empty"],["wet","dry"],["long","short"],["in","out"]];
+const F=[["What helps a plant grow?","Sunlight",["Shoes","A pillow"]],["Which animal lives in the ocean?","Dolphin",["Lion","Horse"]],["What do we breathe to live?","Air",["Sand","Juice"]],["What do bees make?","Honey",["Cheese","Bread"]],["Which part of a plant grows under the soil?","Roots",["Petals","Fruit"]],["What falls from clouds?","Rain",["Stones","Leaves"]],["How many legs does a spider have?","8",["4","6"]],["Which animal can fly?","Bird",["Fish","Cow"]],["What do cows give us?","Milk",["Juice","Sand"]],["Water turns into ice when it is...","Very cold",["Very hot","Very loud"]],["Which sense do we use with our nose?","Smell",["Hearing","Sight"]],["Which planet do we live on?","Earth",["Mars","Jupiter"]],["Which season is the coldest?","Winter",["Summer","Spring"]],["What do fish use to breathe?","Gills",["Wings","Hands"]],["Which animal has a long trunk?","Elephant",["Cat","Duck"]],["What do caterpillars turn into?","Butterflies",["Birds","Frogs"]],["How many days are in a week?","7",["5","10"]],["Which one is a baby cat?","Kitten",["Puppy","Chick"]]];
+const SN=[["meows","🐱 Cat"],["barks","🐶 Dog"],["moos","🐮 Cow"],["quacks","🦆 Duck"],["roars","🦁 Lion"],["oinks","🐷 Pig"]];
+const MIX=[["Red","Blue","Purple"],["Blue","Yellow","Green"],["Red","Yellow","Orange"],["Red","White","Pink"],["Black","White","Gray"]];
+const COL=[["banana","Yellow"],["grass","Green"],["sky","Blue"],["tomato","Red"],["snow","White"],["carrot","Orange"],["night sky","Black"],["grapes","Purple"]];
+const ALLC=["Red","Blue","Yellow","Green","Orange","Purple","Pink","Gray","White","Black"];
+const SH=[["Triangle",3],["Square",4],["Pentagon",5],["Hexagon",6]];
+const GEN={
+Math:l=>{const m=Math.min(9+l,150),t=R(1,l>25?7:6);
+ if(t==1){const a=R(1,m),b=R(1,m);return numQ(`What is ${a} + ${b}?`,a+b)}
+ if(t==2){const a=R(3,m),b=R(1,a);return numQ(`What is ${a} − ${b}?`,a-b)}
+ if(t==3){const n=R(1,m);return R(0,1)?numQ(`Which number comes after ${n}?`,n+1):numQ(`Which number comes before ${n+1}?`,n)}
+ if(t==4){const n=R(1,Math.min(4+Math.floor(l/4),12));return numQ(`How many? ${P(["🍎","⭐","🐟","🎈","🍪"]).repeat(n)}`,n)}
+ if(t==5){const s=new Set();while(s.size<3)s.add(R(1,m));const a=[...s],b=R(0,1),ans=b?Math.max(...a):Math.min(...a);return{question:`Which number is the ${b?"biggest":"smallest"}?`,...opts(String(ans),a.map(String))}}
+ if(t==6){const[n,s]=P(SH);return numQ(`How many sides does a ${n} have?`,s)}
+ const a=R(2,2+Math.floor(l/10)),b=R(2,5+Math.floor(l/10));return numQ(`What is ${a} × ${b}?`,a*b)},
+Words:l=>{const t=R(1,4);
+ if(t==1){const f=P(RH),w=P(f),a=P(f.filter(x=>x!==w));return{question:`Which word rhymes with "${w}"?`,...opts(a,S(RH.filter(x=>x!==f).flat()).slice(0,2))}}
+ if(t==2){const p=P(OPP),[x,y]=R(0,1)?p:[p[1],p[0]];return{question:`What is the opposite of "${x}"?`,...opts(y,S(OPP.flat().filter(z=>!p.includes(z))).slice(0,2))}}
+ if(t==3){const it=P(Object.values(CAT).flat()),w=it.split(" ")[1],L=w[0].toUpperCase();return{question:`Which letter does "${w}" start with?`,...opts(L,S("ABCDEFGHIJKLMNOPRSTW".split("").filter(c=>c!==L)).slice(0,2))}}
+ return catQ(P(["animal","fruit","vehicle"]))},
+Science:l=>{const t=R(1,4);
+ if(t<=2){const[q,a,w]=P(F);return{question:q,...opts(a,w)}}
+ if(t==3){const[s,a]=P(SN);return{question:`Which animal ${s}?`,...opts(a,S(SN.map(x=>x[1]).filter(x=>x!==a)).slice(0,2))}}
+ return catQ(P(["animal","fruit","vehicle"]))},
+Art:l=>{const t=R(1,4);
+ if(t==1){const[a,b,c]=P(MIX),[x,y]=R(0,1)?[a,b]:[b,a];return{question:`Which color do you get by mixing ${x} and ${y}?`,...opts(c,S(ALLC.filter(z=>z!==c)).slice(0,2))}}
+ if(t==2){const[o,c]=P(COL);return{question:`What color is ${/^[aeiou]/.test(o)?"an":"a"} ${o}?`,...opts(c,S(ALLC.filter(z=>z!==c)).slice(0,2))}}
+ if(t==3){const[n,s]=P(SH);return{question:`Which shape has ${s} sides?`,...opts(n,S(SH.map(x=>x[0]).filter(x=>x!==n)).slice(0,2))}}
+ return{question:"Which one is a color?",...opts(P(ALLC),S(Object.values(CAT).flat()).slice(0,2))}}
+};
+const makeTask=(id,n)=>{const out=[],seen=new Set();let g=0;while(out.length<10&&g++<300){const q=GEN[id](n);if(!seen.has(q.question)||g>200){seen.add(q.question);out.push(q)}}return out};
+const LESSONS=[{id:"Math",title:"Number Galaxy",e:"🚀",tag:"MATH MAGIC",c:"m"},{id:"Words",title:"The Word Garden",e:"🦊",tag:"STORY TIME",c:"r"},{id:"Science",title:"Tiny Scientists",e:"🐙",tag:"WOW, SCIENCE!",c:"s"},{id:"Art",title:"Rainbow Art Club",e:"🦄",tag:"MAKE & CREATE",c:"a"}];
+const FREE=["🦊","🐱","🐻","🐰"],SHOP=[["🦁",100],["🐵",150],["🐼",200],["🦄",300],["🐸",350],["🐲",500]];
+const BADGES=[["🌟","First Task","Finish 1 task",s=>s.total>=1],["🔟","10 Tasks","Finish 10 tasks",s=>s.total>=10],["💯","Perfect!","Get 10/10 in a task",s=>s.perfect>=1],["🔥","3-Day Streak","Learn 3 days in a row",s=>s.best>=3],["🚀","7-Day Streak","Learn 7 days in a row",s=>s.best>=7],["⭐","500 Stars","Earn 500 stars",s=>s.earned>=500],["🏆","Lesson Master","Finish 100 tasks in one lesson",s=>Object.values(s.tasks).some(v=>v>=100)]];
+const D={stars:0,earned:0,total:0,perfect:0,best:0,streak:0,last:null,days:[],tasks:{},acc:{},owned:[...FREE],gd:"",gn:0};
+
+/* ---------- components ---------- */
+function Confetti(){const items=useRef(Array.from({length:40},(_,i)=>({e:P(["⭐","✨","🎉","🌟","💜"]),l:R(0,98),d:Math.random()*1.2,s:R(16,30)}))).current;
+ return h("div",{className:"cf"},items.map((c,i)=>h("span",{key:i,style:{left:c.l+"%",animationDelay:c.d+"s",fontSize:c.s}},c.e)))}
+
+function Login({onGo}){
+ const [name,setName]=useState(""),[av,setAv]=useState("🦊"),[err,setErr]=useState("");
+ const go=e=>{e.preventDefault();const n=name.trim().replace(/\s+/g," ");if(!n){setErr("Type your name first, little explorer!");return}const p={name:n,avatar:av};sv("ll.profile",p);beep([523,659,784],.2);onGo(p)};
+ return h("div",{className:"login"},h("form",{className:"lcard",onSubmit:go},
+  h("div",{style:{fontSize:64}},av),h("h1",null,"Who's exploring today?"),
+  h("p",{style:{color:"#85839d",fontSize:13}},"Pick a character and type your name!"),
+  h("input",{value:name,maxLength:20,placeholder:"Type your name here...",onChange:e=>{setName(e.target.value);setErr("")}}),
+  h("div",{style:{color:"#d66e61",fontSize:12,minHeight:16}},err),
+  h("div",{className:"av"},FREE.map(a=>h("button",{type:"button",key:a,className:a===av?"sel":"",onClick:()=>{setAv(a);beep([660],.1)}},a))),
+  h("button",{className:"pb",style:{width:"100%"}},"Let's explore! →"),
+  h("p",{style:{fontSize:10,color:"#9a97a9"}},"Grown-up note: progress is saved only on this device. A new name starts a new profile.")))}
+
+function Quiz({lesson,n,prof,onFinish,onExit}){
+ const [qs]=useState(()=>makeTask(lesson.id,n));
+ const [i,setI]=useState(0),[pick,setPick]=useState(null),[tried,setTried]=useState([]),[combo,setCombo]=useState(0),[ok,setOk]=useState(0),[earn,setEarn]=useState(0),[an,setAn]=useState({k:0,t:""}),[msg,setMsg]=useState("");
+ const q=qs[i],tm=useRef();useEffect(()=>()=>clearTimeout(tm.current),[]);
+ const choose=o=>{
+  if(pick!==null||tried.includes(o))return;
+  if(o===q.answer){
+   const first=tried.length===0,nc=first?combo+1:0,bonus=first&&nc%5===0?5:0,ne=earn+(first?5:0)+bonus,nok=ok+(first?1:0);
+   setPick(o);setCombo(nc);setEarn(ne);setOk(nok);setAn({k:an.k+1,t:"hopA"});
+   setMsg(nc>=3?`🔥 ${nc} in a row!${bonus?" +5 bonus stars!":""}`:"Brilliant! 🌟");beep([523,659,784],.2);
+   tm.current=setTimeout(()=>{
+    if(i+1<10){setI(i+1);setPick(null);setTried([]);setMsg("")}
+    else{const perfect=nok===10;onFinish({ok:nok,perfect,stars:ne+10+(perfect?10:0)})}
+   },1000);
+  }else{setTried([...tried,o]);setCombo(0);setAn({k:an.k+1,t:"shk"});setMsg("Good try! Have another guess 🌱");beep([260,220],.16)}
+ };
+ return h("div",{className:"wrap"},h("div",{className:"qwrap"},
+  h("div",{className:"row"},h("button",{className:"gb",onClick:onExit},"← Back"),h("b",null,lesson.title+" · Task "+(n)+"/100"),h("span",{className:"chip"},"⭐ "+earn)),
+  h("div",{className:"bar",style:{height:12,marginTop:14}},h("div",{style:{width:(i+(pick!==null?1:0))/10*100+"%"}})),
+  h("small",{style:{color:"#85839d"}},`Question ${i+1} of 10`),
+  h("div",null,h("span",{key:an.k,className:"mascot "+an.t},prof.avatar)),
+  h("div",{className:"qcard"},h("h2",null,q.question),
+   h("button",{className:"gb",style:{marginBottom:14},onClick:()=>say(q.question)},"🔊 Listen"),
+   h("div",{className:"opts"},q.options.map(o=>h("button",{key:o,className:"opt"+(pick===o?" ok":tried.includes(o)?" no":""),disabled:pick!==null||tried.includes(o),onClick:()=>choose(o)},o))),
+   h("div",{className:"fb"},msg))))}
+
+function Summary({res,lesson,onNext,onStop}){
+ useEffect(()=>{beep([659,784,1047],.3);const t=setTimeout(onNext,4500);return()=>clearTimeout(t)},[]);
+ return h("div",{className:"wrap"},h(Confetti),h("div",{className:"qwrap card",style:{marginTop:30}},
+  h("div",{style:{fontSize:70}},res.perfect?"🏆":"🎉"),h("h1",null,res.perfect?"Perfect score!":"Task complete!"),
+  h("p",null,`${res.ok}/10 right on the first try`),h("h2",{style:{color:"#7458e8"}},"+"+res.stars+" ⭐"),
+  h("p",{style:{color:"#85839d",fontSize:13}},"Your next task in "+lesson.title+" starts automatically..."),
+  h("div",{className:"row",style:{justifyContent:"center"}},h("button",{className:"pb",onClick:onNext},"Next task now →"),h("button",{className:"gb",onClick:onStop},"Stop"))))}
+
+function Modal({title,onClose,children}){return h("div",{className:"bg",onClick:e=>e.target===e.currentTarget&&onClose()},h("div",{className:"modal"},h("button",{className:"x",onClick:onClose,"aria-label":"Close"},"✕"),h("h2",null,title),children))}
+
+function Home({prof,setProf}){
+ const key="ll.u."+prof.name.toLowerCase();
+ const [s,setS]=useState(()=>({...D,...ld(key)}));
+ const [quiz,setQuiz]=useState(null),[sum,setSum]=useState(null),[modal,setModal]=useState(null),[toast,setToast]=useState(""),[find,setFind]=useState(""),[snd,setSnd]=useState(SND),[,force]=useState(0);
+ const tt=useRef();useEffect(()=>sv(key,s),[s]);
+ const say2=m=>{setToast(m);clearTimeout(tt.current);tt.current=setTimeout(()=>setToast(""),3200)};
+ const today=dk(new Date()),goal=s.gd===today?s.gn:0,gp=Math.round(Math.min(goal,3)/3*100);
+ const start=l=>{beep([440,554],.15);setSum(null);setQuiz(l.id);
+  setS(p=>{if(p.days.includes(today))return p;const c=p.last&&gap(p.last,today)===1?p.streak+1:1;return{...p,days:[...p.days,today].slice(-400),streak:c,best:Math.max(p.best,c),last:today}})};
+ const finish=(l,res)=>{
+  const cnt=(s.tasks[l.id]||0)+1,old=lvl(s.earned),nw=lvl(s.earned+res.stars);
+  setS(p=>{const a=p.acc[l.id]||{c:0,t:0};return{...p,stars:p.stars+res.stars,earned:p.earned+res.stars,total:p.total+1,perfect:p.perfect+(res.perfect?1:0),tasks:{...p.tasks,[l.id]:cnt},acc:{...p.acc,[l.id]:{c:a.c+res.ok,t:a.t+10}},gd:today,gn:(p.gd===today?p.gn:0)+1}});
+  setSum({...res,cnt});
+  if(cnt===100)say2("🏆 Lesson Master! 100 tasks done! Round 2 begins!");else if(nw>old)say2("🎊 Level "+nw+"! Amazing!");};
+ const L=quiz&&LESSONS.find(x=>x.id===quiz);
+ const owned=s.owned;
+ const buy=(a,c)=>{if(s.stars<c){say2("Not enough stars yet! Keep learning ⭐");return}setS(p=>({...p,stars:p.stars-c,owned:[...p.owned,a]}));setProf({...prof,avatar:a});sv("ll.profile",{...prof,avatar:a});beep([659,784,1047],.2);say2("New friend unlocked! "+a)};
+ const use=a=>{const p={...prof,avatar:a};setProf(p);sv("ll.profile",p)};
+ const resetL=id=>{if(confirm("Reset this lesson's progress?")){setS(p=>({...p,tasks:{...p.tasks,[id]:0},acc:{...p.acc,[id]:{c:0,t:0}}}));say2("Lesson reset")}};
+ const resetAll=()=>{if(confirm("Delete ALL progress for "+prof.name+"?")){setS({...D});setModal(null);say2("Everything reset")}};
+ const signOut=()=>{if(confirm("Sign out? Progress stays saved on this device.")){sv("ll.profile",null);try{localStorage.removeItem("ll.profile")}catch(e){}setProf(null)}};
+
+ if(quiz&&sum)return h("div",null,h(Summary,{res:sum,lesson:L,onNext:()=>setSum(null),onStop:()=>{setQuiz(null);setSum(null)}}),toast&&h("div",{className:"toast"},toast));
+ if(quiz)return h(Quiz,{key:quiz+(s.tasks[quiz]||0),lesson:L,n:(s.tasks[quiz]||0)%100+1,prof,onFinish:r=>finish(L,r),onExit:()=>setQuiz(null)});
+
+ const wk=week(),shown=LESSONS.filter(l=>l.title.toLowerCase().includes(find.toLowerCase()));
+ return h("div",{className:"wrap"},
+  h("div",{className:"top"},h("div",{className:"brand"},"little",h("b",null,"learners")),
+   h("span",{className:"chip"},prof.avatar+" "+prof.name),h("span",{className:"chip"},"⭐ "+s.stars),
+   h("button",{className:"ib",title:"Badges",onClick:()=>setModal("badges")},"🏅"),
+   h("button",{className:"ib",title:"Shop",onClick:()=>setModal("shop")},"🛍️"),
+   h("button",{className:"ib",title:"For grown-ups",onClick:()=>setModal("report")},"📊"),
+   h("button",{className:"ib",title:"Sound",onClick:()=>{SND=!SND;setSnd(SND);sv("ll.snd",SND)}},snd?"🔊":"🔇"),
+   h("button",{className:"ib",title:"Sign out",onClick:signOut},"🚪")),
+  h("div",{className:"hero"},h("div",null,h("h1",null,"Hey ",prof.name+"! ",h("em",null,"Ready for an adventure?")),h("p",null,"Every lesson has endless tasks, 10 questions each. Collect stars, win badges and unlock new friends!"),
+   h("button",{className:"pb",onClick:()=>start(LESSONS[0])},"Start my adventure →")),h("div",{className:"big"},prof.avatar)),
+  h("div",{className:"stats"},
+   [["📚",s.total,"Tasks finished"],["⭐",s.earned,"Stars earned"],["🔥",cur(s)+" days","Learning streak"],["🎯","Level "+lvl(s.earned),(200-s.earned%200)+" stars to next level"]].map((x,i)=>h("div",{key:i,className:"card stat"},h("span",null,x[0]),h("div",null,h("b",null,x[1]),h("small",null,x[2]))))),
+  h("div",{className:"grid"},
+   h("section",null,h("h2",{style:{marginBottom:10}},"Pick your next adventure ✨"),
+    h("input",{className:"search",placeholder:"Find an adventure...",value:find,onChange:e=>setFind(e.target.value)}),
+    shown.length?h("div",{className:"lessons"},shown.map(l=>{const c=s.tasks[l.id]||0,pr=c%100,rd=Math.floor(c/100)+1,lv=pr<20?"Beginner":pr<60?"Explorer":"Champion";
+     return h("article",{key:l.id,className:"lc"},h("div",{className:"art "+l.c,onClick:()=>start(l)},h("i",null,l.tag),l.e,c>=100&&h("span",{style:{position:"absolute",right:10,top:8,fontSize:22}},"🏆")),
+      h("div",{className:"li"},h("h3",null,l.title),h("small",null,`Task ${pr+1} of 100 · Round ${rd} · ${lv}`),h("div",{className:"bar"},h("div",{style:{width:pr+"%"}})),
+       h("div",{className:"row"},h("small",null,c+" tasks done"),h("button",{className:"pb",style:{padding:"8px 14px"},onClick:()=>start(l)},"▶ Play"))))})):h("div",{className:"card"},"No adventures found. Try another word! 🔎")),
+   h("aside",{className:"side"},
+    h("div",{className:"card"},h("h3",null,"Today's little goal"),h("div",{className:"row",style:{marginTop:10,justifyContent:"flex-start",gap:12}},
+     h("div",{className:"ring",style:{background:`conic-gradient(#7d64eb 0 ${gp}%,#efedfa ${gp}% 100%)`}},h("div",null,Math.min(goal,3)+"/3")),
+     h("small",null,goal>=3?"Goal complete! 🌟":`Finish ${3-goal} more ${3-goal===1?"task":"tasks"} today.`))),
+    h("div",{className:"card",style:{background:"#fff5db"}},h("h3",null,"🔥 "+cur(s)+(cur(s)===1?" day":" days")),
+     h("div",{className:"wk"},wk.map((d,i)=>h("div",{key:d},h("div",{className:"dot"+(s.days.includes(d)?" on":"")+(d===today?" td":"")},s.days.includes(d)?"✓":""),"MTWTFSS"[i])))),
+    h("div",{className:"card",style:{background:"#eeefff"}},h("b",null,"💡 Tiny tip"),h("p",{style:{fontSize:12,color:"#817c99",margin:"6px 0 0"}},"Tap 🔊 Listen to hear any question. Answer first try to earn stars!")))),
+  modal==="badges"&&h(Modal,{title:"My badges 🏅",onClose:()=>setModal(null)},h("div",{className:"tiles"},BADGES.map(b=>{const got=b[3](s);return h("div",{key:b[1],className:"tile"+(got?"":" lock")},h("div",{className:"e"},b[0]),h("b",null,b[1]),b[2])}))),
+  modal==="shop"&&h(Modal,{title:"Star shop 🛍️",onClose:()=>setModal(null)},h("p",null,"You have ⭐ "+s.stars),h("div",{className:"tiles"},[...FREE.map(a=>[a,0]),...SHOP].map(([a,c])=>{const has=owned.includes(a);return h("div",{key:a,className:"tile"},h("div",{className:"e"},a),has?h("button",{className:"gb",onClick:()=>use(a)},prof.avatar===a?"In use ✓":"Use"):h("button",{className:"pb",style:{padding:"8px 12px"},onClick:()=>buy(a,c)},"⭐ "+c))}))),
+  modal==="report"&&h(Modal,{title:prof.name+"'s progress 📊",onClose:()=>setModal(null)},
+   h("p",{style:{fontSize:13,color:"#79758d"}},`${s.total} tasks, ${s.earned} stars earned, ${s.days.length} learning days, best streak ${s.best}.`),
+   LESSONS.map(l=>{const a=s.acc[l.id]||{c:0,t:0},pc=a.t?Math.round(a.c/a.t*100):0;return h("div",{key:l.id,className:"card",style:{marginTop:8}},h("div",{className:"row"},h("b",null,l.e+" "+l.title),h("button",{className:"gb",style:{padding:"6px 10px",fontSize:12},onClick:()=>resetL(l.id)},"Reset")),h("small",null,`${s.tasks[l.id]||0} tasks · ${pc}% right on first try`),h("div",{className:"bar"},h("div",{style:{width:pc+"%"}})))}),
+   h("button",{className:"gb",style:{marginTop:12,width:"100%",color:"#d66e61"},onClick:resetAll},"Reset everything")),
+  toast&&h("div",{className:"toast"},toast));
+}
+
+function App(){const [p,setP]=useState(()=>ld("ll.profile"));return p?h(Home,{key:p.name,prof:p,setProf:setP}):h(Login,{onGo:setP})}
+SND=ld("ll.snd",true)!==false;
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body>
+</html>
